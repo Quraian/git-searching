@@ -8,7 +8,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
-import Users from "./users/Users";
+import UsersContainer from "./users/UsersContainer";
 
 export const App = () => (
   <ChakraProvider theme={theme}>
@@ -21,7 +21,7 @@ export const App = () => (
           </Flex>
         </Box>
         <Divider />
-        <Users />
+        <UsersContainer />
       </Stack>
     </Box>
   </ChakraProvider>
