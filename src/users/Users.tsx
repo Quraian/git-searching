@@ -20,7 +20,7 @@ const Users = () => {
   const [selectedUser, setSelectedUser] = useState<User>();
 
   useEffect(() => {
-    setSelectedUser(users.find((u) => u.username === selectedUserId));
+    setSelectedUser(users.find((u) => u.id === selectedUserId));
   }, [selectedUserId]);
 
   return (
@@ -35,10 +35,10 @@ const Users = () => {
       <Flex w="90%" gap={4}>
         <Stack w="50%" maxW="50%" spacing={4}>
           {users.map((user) => (
-            <Box key={user.username} p={1}>
+            <Box key={user.id} p={1}>
               <UserListItem
-                selected={user.username === selectedUserId}
-                onUserSelect={() => setSelectedUserId(user.username)}
+                selected={user.id === selectedUserId}
+                onUserSelect={() => setSelectedUserId(user.id)}
                 {...user}
               ></UserListItem>
             </Box>

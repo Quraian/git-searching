@@ -7,7 +7,7 @@ import { Colors } from "../Consts";
 
 const UserListItem: FC<
   User & { selected?: boolean; onUserSelect: () => void }
-> = ({ name, username, url, avatar, selected, onUserSelect }) => {
+> = ({ name, login, html_url, avatar, selected, onUserSelect }) => {
   return (
     <Box
       maxW="sm"
@@ -22,7 +22,7 @@ const UserListItem: FC<
         <Avatar name={name} src={avatar} size="sm" />
         <Flex flexFlow="column">
           <Flex gap={2}>
-            <Link href={url} color="blue.500" isExternal>
+            <Link href={html_url} color="blue.500" isExternal>
               <Flex alignContent="center" gap="1">
                 <Text fontSize="lg">{name}</Text>
                 <Box alignSelf="center">
@@ -31,7 +31,7 @@ const UserListItem: FC<
               </Flex>
             </Link>
             <Text fontSize="md" fontWeight={600} color={Colors.DARK_GRAY}>
-              {username}
+              {login}
             </Text>
           </Flex>
         </Flex>
