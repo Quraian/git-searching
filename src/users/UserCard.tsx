@@ -2,9 +2,9 @@ import { FC } from "react";
 import { Flex, Heading, Image, Text } from "@chakra-ui/react";
 
 import { Colors } from "../Consts";
-import { User } from "./user.model";
+import { User } from "../models/user.model";
 
-const UserCard: FC<Partial<User>> = ({ name, login, avatar, bio }) => (
+const UserCard: FC<Partial<User>> = ({ name, login, avatar_url, bio }) => (
   <Flex
     flexFlow="column"
     flexGrow={2}
@@ -26,7 +26,7 @@ const UserCard: FC<Partial<User>> = ({ name, login, avatar, bio }) => (
       alignSelf="center"
       borderRadius="full"
       boxSize="150px"
-      src={avatar}
+      src={avatar_url}
       alt={name}
     />
   </Flex>

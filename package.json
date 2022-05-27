@@ -23,6 +23,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "mock": "json-mock-api --port 8000 --directory ./src/data",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -41,5 +42,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {
+    "json-mock-api": "^1.2.2"
+  },
+  "proxy": "http://localhost:8000"
 }

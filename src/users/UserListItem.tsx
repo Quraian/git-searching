@@ -2,16 +2,16 @@ import { FC } from "react";
 import { Flex, Avatar, Link, Box, Text } from "@chakra-ui/react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
-import { User } from "./user.model";
+import { User } from "../models/user.model";
 import { Colors } from "../Consts";
 
 const UserListItem: FC<
   User & { selected?: boolean; onUserSelect: () => void }
-> = ({ name, login, html_url, avatar, selected, onUserSelect }) => {
+> = ({ login, html_url, avatar_url, selected, onUserSelect }) => {
   return (
     <Box
       maxW="sm"
-      p="5"
+      p="2"
       borderWidth="1px"
       rounded="md"
       bg={selected ? "blackAlpha.100" : "#fff"}
@@ -19,12 +19,12 @@ const UserListItem: FC<
       _hover={{ cursor: "pointer" }}
     >
       <Flex gap={2}>
-        <Avatar name={name} src={avatar} size="sm" />
+        <Avatar name={html_url} src={avatar_url} size="sm" />
         <Flex flexFlow="column">
           <Flex gap={2}>
             <Link href={html_url} color="blue.500" isExternal>
               <Flex alignContent="center" gap="1">
-                <Text fontSize="lg">{name}</Text>
+                <Text fontSize="lg">{login}</Text>
                 <Box alignSelf="center">
                   <FaExternalLinkAlt size="10px" />
                 </Box>
