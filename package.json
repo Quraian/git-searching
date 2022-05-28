@@ -32,7 +32,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "eject": "react-scripts eject",
-    "homepage": "https://quraian.github.io/git-searching"
+    "homepage": "https://quraian.github.io"
   },
   "eslintConfig": {
     "extends": "react-app"
