@@ -51,7 +51,7 @@ const UsersContainer = () => {
       setIsLoading(true);
       // https://api.github.com/search/users
       fetch(
-        "/users?" +
+        "https://api.github.com/search/users?" +
           new URLSearchParams({
             page: page.toString(),
             per_page: Defaults.PER_PAGE.toString(),
