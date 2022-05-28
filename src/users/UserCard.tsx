@@ -12,6 +12,7 @@ const UserCard: FC<Partial<User>> = ({ name, login, avatar_url, bio }) => (
     shadow="md"
     borderWidth="1px"
     rounded="md"
+    h="100%"
   >
     <Flex justifyContent="center" gap={2}>
       <Heading fontSize="xl">{name}</Heading>

@@ -1,4 +1,10 @@
-import { ChangeEvent, useEffect, useState, ChangeEventHandler } from "react";
+import {
+  ChangeEvent,
+  useEffect,
+  useState,
+  ChangeEventHandler,
+  KeyboardEventHandler,
+} from "react";
 import { Pagination } from "@mui/material";
 
 import { Response, User } from "../models";
@@ -10,6 +16,8 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Stack,
+  Skeleton,
 } from "@chakra-ui/react";
 import { Defaults } from "../Consts";
 
@@ -21,87 +29,73 @@ const UsersContainer = () => {
   const [page, setPage] = useState(1);
   const [data, setData] = useState<Response<User>>();
 
+  const [inputValue, setInputValue] = useState("");
   const [query, setQuery] = useState("");
 
   useEffect(() => {
     setSelectedUser(data?.items.find((u) => u.id === selectedUserId));
   }, [data?.items, selectedUserId]);
 
-  // useEffect(() => {
-  //   fetch(
-  //     "/users?" +
-  //       new URLSearchParams({
-  //         page: page.toString(),
-  //         per_page: Defaults.PER_PAGE.toString(),
-  //         q: query,
-  //       }).toString()
-  //   )
-  //     .then((res) => res.json())
-  //     .then(
-  //       (result) => {
-  //         setIsLoaded(true);
-  //         setData(result);
-  //       },
-  //       (error) => {
-  //         setIsLoaded(true);
-  //         setError(error);
-  //       }
-  //     );
-  // }, [page, query]);
-
   const handlePageChange = (_: ChangeEvent<unknown>, p: number) => {
-    console.log({ p });
-
     setPage(p);
-    handleClick();
   };
 
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    setQuery(event.target.value);
+    setInputValue(event.target.value);
   };
-  // const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-  //   console.log(e.currentTarget.value);
-  // };
 
-  const handleClick = () => {
-    setIsLoading(true);
-
-    // https://api.github.com/search/users
-    fetch(
-      "/users?" +
-        new URLSearchParams({
-          page: page.toString(),
-          per_page: Defaults.PER_PAGE.toString(),
-          q: query,
-        }).toString()
-    )
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setIsLoading(false);
-          setData(result);
-        },
-        (error) => {
-          setIsLoading(false);
-          setError(error);
-        }
-      );
+  const handleInputKeydown: KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (e.key === "Enter") {
+      setQuery(inputValue);
+    }
   };
+
+  const handleSearchClick = () => {
+    setQuery(inputValue);
+  };
+
+  useEffect(() => {
+    console.log({ page, query });
+
+    if (!!query) {
+      setIsLoading(true);
+      // https://api.github.com/search/users
+      fetch(
+        "/users?" +
+          new URLSearchParams({
+            page: page.toString(),
+            per_page: Defaults.PER_PAGE.toString(),
+            q: query,
+          }).toString()
+      )
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            setIsLoading(false);
+            setData(result);
+          },
+          (error) => {
+            setIsLoading(false);
+            setError(error);
+          }
+        );
+    }
+  }, [page, query]);
 
   const renderUsers = () => {
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (isLoading) {
       return <div>Loading...</div>;
-    } else {
-      const pagesCount =
+    } else if (!!data?.items.length) {
+      const totalNumberOfPages =
         (data && Math.ceil(data?.total_count / Defaults.PER_PAGE)) || 0;
 
       return (
         <>
           <Flex p={2}>
             <Pagination
-              count={pagesCount}
+              count={totalNumberOfPages}
               page={page}
               onChange={handlePageChange}
             />
@@ -127,14 +121,19 @@ const UsersContainer = () => {
             id="user-name"
             placeholder="username"
             onChange={handleInputChange}
+            onKeyDown={handleInputKeydown}
             autoFocus
           />
         </FormControl>
-        <Button alignSelf="flex-end" onClick={handleClick}>
+        <Button
+          alignSelf="flex-end"
+          onClick={handleSearchClick}
+          disabled={!inputValue}
+        >
           Search
         </Button>
       </Flex>
-      {data?.items && renderUsers()}
+      {renderUsers()}
     </Container>
   );
 };
