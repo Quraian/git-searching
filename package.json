@@ -30,9 +30,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -b master -d build",
     "eject": "react-scripts eject",
-    "homepage": "https://quraian.github.io"
+    "homepage": "https://quraian.github.io/git-searching"
   },
   "eslintConfig": {
     "extends": "react-app"
