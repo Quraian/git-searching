@@ -16,14 +16,10 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Stack,
-  Skeleton,
 } from "@chakra-ui/react";
 import { Defaults } from "../Consts";
 
 const UsersContainer = () => {
-  const [selectedUserId, setSelectedUserId] = useState<number>();
-  const [selectedUser, setSelectedUser] = useState<User>();
   const [error, setError] = useState<{ message: string }>();
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -31,10 +27,6 @@ const UsersContainer = () => {
 
   const [inputValue, setInputValue] = useState("");
   const [query, setQuery] = useState("");
-
-  useEffect(() => {
-    setSelectedUser(data?.items.find((u) => u.id === selectedUserId));
-  }, [data?.items, selectedUserId]);
 
   const handlePageChange = (_: ChangeEvent<unknown>, p: number) => {
     setPage(p);
@@ -55,8 +47,6 @@ const UsersContainer = () => {
   };
 
   useEffect(() => {
-    console.log({ page, query });
-
     if (!!query) {
       setIsLoading(true);
       // https://api.github.com/search/users
@@ -85,31 +75,27 @@ const UsersContainer = () => {
   const renderUsers = () => {
     if (error) {
       return <div>Error: {error.message}</div>;
-    } else if (isLoading) {
-      return <div>Loading...</div>;
-    } else if (!!data?.items.length) {
-      const totalNumberOfPages =
-        (data && Math.ceil(data?.total_count / Defaults.PER_PAGE)) || 0;
+    }
 
-      return (
-        <>
-          <Flex p={2}>
+    const totalNumberOfPages =
+      (data && Math.ceil(data?.total_count / Defaults.PER_PAGE)) || 0;
+
+    return (
+      <>
+        <Flex p={2}>
+          {!!data?.items.length && (
             <Pagination
               count={totalNumberOfPages}
               page={page}
               onChange={handlePageChange}
             />
-          </Flex>
-          <Flex w="90%" gap={4}>
-            <Users
-              users={data?.items}
-              onUserSelect={(id) => setSelectedUserId(id)}
-              selectedUser={selectedUser}
-            />
-          </Flex>
-        </>
-      );
-    }
+          )}
+        </Flex>
+        <Flex w="90%" gap={4}>
+          <Users isLoading={isLoading} users={data?.items} />
+        </Flex>
+      </>
+    );
   };
 
   return (

@@ -14,7 +14,7 @@ const UserListItem: FC<
       p="2"
       borderWidth="1px"
       rounded="md"
-      bg={selected ? "blackAlpha.100" : "#fff"}
+      bg={selected ? "blackAlpha.200" : "blackAlpha.000"}
       onClick={onUserSelect}
       _hover={{ cursor: "pointer" }}
     >
